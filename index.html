@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bader — Gamer Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0d10;
+      --surface: #12161c;
+      --surface2: #1a2030;
+      --xbox: #107C10;
+      --xbox-glow: #52d453;
+      --zelda: #d4a017;
+      --zelda-glow: #f5c842;
+      --nintendo: #e4000f;
+      --text: #f0f2f5;
+      --muted: #7a8694;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 40%, rgba(16,124,16,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 80% 60%, rgba(212,160,23,0.14) 0%, transparent 70%);
+      z-index: 0;
+    }
+
+    /* floating particles */
+    .particles {
+      position: absolute; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: float linear infinite;
+    }
+    @keyframes float {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      10%  { opacity: 0.5; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--xbox-glow);
+      border: 1px solid rgba(82,212,83,0.3);
+      border-radius: 100px;
+      padding: 0.3rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3.5rem, 12vw, 8rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 30%, var(--xbox-glow) 70%, var(--zelda-glow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 400px;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 2.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .badge:hover {
+      transform: translateY(-2px);
+    }
+    .badge.xbox {
+      background: rgba(16,124,16,0.15);
+      border-color: rgba(82,212,83,0.4);
+      color: var(--xbox-glow);
+      box-shadow: 0 0 16px rgba(82,212,83,0.1);
+    }
+    .badge.xbox:hover { box-shadow: 0 0 28px rgba(82,212,83,0.3); }
+    .badge.zelda {
+      background: rgba(212,160,23,0.12);
+      border-color: rgba(245,200,66,0.4);
+      color: var(--zelda-glow);
+    }
+    .badge.zelda:hover { box-shadow: 0 0 28px rgba(245,200,66,0.25); }
+    .badge.nintendo {
+      background: rgba(228,0,15,0.12);
+      border-color: rgba(228,0,15,0.4);
+      color: #ff4d57;
+    }
+    .badge.nintendo:hover { box-shadow: 0 0 28px rgba(228,0,15,0.25); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 1;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 6rem 1.5rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .about-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .about-card:hover { transform: translateY(-3px); }
+    .about-card.wide { grid-column: 1 / -1; }
+    .about-card.xbox-card:hover { border-color: rgba(82,212,83,0.35); }
+    .about-card.zelda-card:hover { border-color: rgba(245,200,66,0.35); }
+    .about-card.nintendo-card:hover { border-color: rgba(228,0,15,0.35); }
+
+    .card-icon { font-size: 2rem; margin-bottom: 0.9rem; }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .card-text { color: var(--muted); font-size: 0.92rem; line-height: 1.7; }
+
+    /* ── STATS ── */
+    .stats-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-inner { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+    .stat {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1;
+    }
+    .stat-num.green { color: var(--xbox-glow); }
+    .stat-num.gold  { color: var(--zelda-glow); }
+    .stat-num.red   { color: #ff4d57; }
+    .stat-label { color: var(--muted); font-size: 0.82rem; margin-top: 0.4rem; letter-spacing: 0.04em; }
+
+    /* ── GAMES LIST ── */
+    .games-list { display: flex; flex-direction: column; gap: 1rem; }
+
+    .game-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .game-row:hover { transform: translateX(4px); }
+    .game-row.zelda-row:hover { border-color: rgba(245,200,66,0.4); box-shadow: -4px 0 0 var(--zelda); }
+    .game-row.xbox-row:hover  { border-color: rgba(82,212,83,0.4);  box-shadow: -4px 0 0 var(--xbox-glow); }
+
+    .game-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .game-info { flex: 1; }
+    .game-name { font-weight: 600; font-size: 0.97rem; }
+    .game-platform { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+    .game-rating { font-size: 0.85rem; color: var(--zelda-glow); }
+
+    /* ── QUOTE ── */
+    .quote-section {
+      text-align: center;
+      padding: 5rem 1.5rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    blockquote {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text);
+      position: relative;
+    }
+    blockquote::before {
+      content: '"';
+      font-size: 6rem;
+      color: var(--xbox-glow);
+      opacity: 0.25;
+      position: absolute;
+      top: -2rem;
+      left: -1rem;
+      font-family: 'Syne', sans-serif;
+      line-height: 1;
+    }
+    blockquote cite {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      font-style: normal;
+      margin-top: 1.2rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    footer span { color: var(--xbox-glow); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 600px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .about-card.wide { grid-column: 1; }
+      .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="hero-content">
+      <div class="tag">⚡ Gamer Profile</div>
+      <h1>BADER</h1>
+      <p class="hero-sub">Controller in hand. Triforce in soul. Living on respawns and golden rupees.</p>
+
+      <div class="hero-badges">
+        <div class="badge xbox">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M4.5 5.5C5.5 4 7 3.5 8 5C9.5 7 11.5 10 11.5 10.5C11.5 11.5 10 12 9 11C8.5 10.5 7.5 10.5 7 11C6 12 4.5 11.5 4.5 10.5C4.5 10 6.5 7 4.5 5.5Z" fill="currentColor"/>
+          </svg>
+          Xbox Player
+        </div>
+        <div class="badge zelda">🗡️ Zelda Fan</div>
+        <div class="badge nintendo">🎮 Nintendo Lover</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Scroll
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-section">
+    <div class="stats-inner">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-num green">∞</div>
+          <div class="stat-label">Hours on Xbox</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num gold">19</div>
+          <div class="stat-label">Zelda Titles Played</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num red">1</div>
+          <div class="stat-label">True Gaming King</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section>
+    <div class="section-label">Who is he</div>
+    <h2>The Player Behind the Controller</h2>
+    <div class="about-grid">
+      <div class="about-card wide xbox-card">
+        <div class="card-icon">🎮</div>
+        <div class="card-title">Xbox is Home</div>
+        <div class="card-text">
+          Bader lives on his Xbox. Whether it's late-night sessions that stretch past 3 AM, grinding achievements, or dominating in online matches — the console is always on. The green glow of the Xbox logo is practically his nightlight.
+        </div>
+      </div>
+      <div class="about-card zelda-card">
+        <div class="card-icon">🗡️</div>
+        <div class="card-title">A Zelda Devotee</div>
+        <div class="card-text">
+          From Ocarina of Time to Tears of the Kingdom, Bader has walked every temple, solved every puzzle, and defeated Ganon more times than he can count. The Triforce is basically his personal logo.
+        </div>
+      </div>
+      <div class="about-card nintendo-card">
+        <div class="card-icon">🍄</div>
+        <div class="card-title">Nintendo is a Religion</div>
+        <div class="card-text">
+          Nintendo Direct announcements hit different when you're Bader. New Zelda? Hype. Mario Kart night? Every Friday. Switch is always charged and ready.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FAVORITE GAMES -->
+  <section>
+    <div class="section-label">The List</div>
+    <h2>Bader's All-Time Picks</h2>
+    <div class="games-list">
+      <div class="game-row zelda-row">
+        <div class="game-icon">🌌</div>
+        <div class="game-info">
+          <div class="game-name">The Legend of Zelda: Tears of the Kingdom</div>
+          <div class="game-platform">Nintendo Switch</div>
+        </div>
+        <div class="game-rating">★★★★★</div>
+      </div>
+      <div class="game-row zelda-row">
+        <div class="game-icon">🌊</div>
+        <div class="game-info">
+          <div class="game-name">The Legend of Zelda: Breath of the Wild</div>
+          <div class="game-platform">Nintendo Switch</div>
+        </div>
+        <div class="game-rating">★★★★★</div>
+      </div>
+      <div class="game-row xbox-row">
+        <div class="game-icon">🌿</div>
+        <div class="game-info">
+          <div class="game-name">Halo Infinite</div>
+          <div class="game-platform">Xbox Series X</div>
+        </div>
+        <div class="game-rating">★★★★☆</div>
+      </div>
+      <div class="game-row xbox-row">
+        <div class="game-icon">🔥</div>
+        <div class="game-info">
+          <div class="game-name">Forza Horizon 5</div>
+          <div class="game-platform">Xbox Series X</div>
+        </div>
+        <div class="game-rating">★★★★★</div>
+      </div>
+      <div class="game-row zelda-row">
+        <div class="game-icon">🎵</div>
+        <div class="game-info">
+          <div class="game-name">The Legend of Zelda: Ocarina of Time</div>
+          <div class="game-platform">Nintendo 64 / Switch Online</div>
+        </div>
+        <div class="game-rating">★★★★★</div>
+      </div>
+      <div class="game-row xbox-row">
+        <div class="game-icon">🕹️</div>
+        <div class="game-info">
+          <div class="game-name">Sea of Thieves</div>
+          <div class="game-platform">Xbox Series X</div>
+        </div>
+        <div class="game-rating">★★★★☆</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <blockquote>
+      It's dangerous to go alone — but I brought my Xbox controller.
+      <cite>— Bader, probably</cite>
+    </blockquote>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    Made with <span>♥</span> for Bader — Gamer. Explorer. Legend.
+  </footer>
+
+  <script>
+    // Generate floating particles
+    const container = document.getElementById('particles');
+    const colors = ['#52d453', '#f5c842', '#ff4d57', '#ffffff'];
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 4 + 2;
+      p.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        left: ${Math.random() * 100}%;
+        bottom: ${Math.random() * -20}%;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration: ${8 + Math.random() * 12}s;
+        animation-delay: ${Math.random() * 8}s;
+        filter: blur(${Math.random() > 0.6 ? 1 : 0}px);
+      `;
+      container.appendChild(p);
+    }
+  </script>
+</body>
+</html>
